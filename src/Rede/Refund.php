@@ -10,29 +10,29 @@ class Refund
     use CreateTrait;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $amount = null;
+    private $amount;
 
     /**
-     * @var DateTime|null
+     * @var DateTime
      */
-    private ?DateTime $refundDateTime = null;
+    private $refundDateTime;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $refundId = null;
+    private $refundId;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $status = null;
+    private $status;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getAmount(): ?int
+    public function getAmount()
     {
         return $this->amount;
     }
@@ -40,18 +40,18 @@ class Refund
     /**
      * @param int $amount
      *
-     * @return $this
+     * @return Refund
      */
-    public function setAmount(int $amount): static
+    public function setAmount($amount)
     {
         $this->amount = $amount;
         return $this;
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getRefundDateTime(): ?DateTime
+    public function getRefundDateTime()
     {
         return $this->refundDateTime;
     }
@@ -59,19 +59,19 @@ class Refund
     /**
      * @param string $refundDateTime
      *
-     * @return $this
+     * @return Refund
      * @throws Exception
      */
-    public function setRefundDateTime(string $refundDateTime): static
+    public function setRefundDateTime($refundDateTime)
     {
         $this->refundDateTime = new DateTime($refundDateTime);
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getRefundId(): ?string
+    public function getRefundId()
     {
         return $this->refundId;
     }
@@ -79,18 +79,18 @@ class Refund
     /**
      * @param string $refundId
      *
-     * @return $this
+     * @return Refund
      */
-    public function setRefundId(string $refundId): static
+    public function setRefundId($refundId)
     {
         $this->refundId = $refundId;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getStatus(): ?string
+    public function getStatus()
     {
         return $this->status;
     }
@@ -98,9 +98,9 @@ class Refund
     /**
      * @param string $status
      *
-     * @return $this
+     * @return Refund
      */
-    public function setStatus(string $status): static
+    public function setStatus($status)
     {
         $this->status = $status;
         return $this;

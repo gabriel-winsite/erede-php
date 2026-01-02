@@ -1,4 +1,6 @@
-<?php
+<?php /**
+ * @noinspection MessDetectorValidationInspection
+ */
 
 namespace Rede;
 
@@ -9,261 +11,258 @@ use InvalidArgumentException;
 
 class Transaction implements RedeSerializable, RedeUnserializable
 {
-    public const CREDIT = 'credit';
-    public const DEBIT = 'debit';
+    const CREDIT = 'credit';
+    const DEBIT = 'debit';
 
-    public const ORIGIN_EREDE = 1;
-    public const ORIGIN_VISA_CHECKOUT = 4;
-    public const ORIGIN_MASTERPASS = 6;
-
-    /**
-     * @var Additional|null
-     */
-    private ?Additional $additional = null;
+    const ORIGIN_EREDE = 1;
+    const ORIGIN_VISA_CHECKOUT = 4;
+    const ORIGIN_MASTERPASS = 6;
 
     /**
-     * @var Authorization|null
+     * @var int
      */
-    private ?Authorization $authorization = null;
+    private $amount;
 
     /**
-     * @var string|null
+     * @var Additional
      */
-    private ?string $authorizationCode = null;
+    private $additional;
 
     /**
-     * @var int|null
+     * @var Authorization
      */
-    private ?int $brandTid = null;
+    private $authorization;
 
     /**
-     * @var Brand|null
+     * @var string
      */
-    private ?Brand $brand = null;
+    private $authorizationCode;
 
     /**
-     * @var string|null
+     * @var int
      */
-    private ?string $cancelId = null;
+    private $brandTid;
 
     /**
-     * @var bool|Capture|null
+     * @var Brand
      */
-    private bool|Capture|null $capture = null;
+    private $brand;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $cardBin = null;
+    private $cancelId;
 
     /**
-     * @var string|null
+     * @var bool|Capture
      */
-    private ?string $cardHolderName = null;
+    private $capture;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $cardNumber = null;
+    private $cardBin;
 
     /**
-     * @var Cart|null
+     * @var string
      */
-    private ?Cart $cart = null;
+    private $cardHolderName;
 
     /**
-     * @var DateTime|null
+     * @var string
      */
-    private ?DateTime $dateTime = null;
+    private $cardNumber;
 
     /**
-     * @var int|null
+     * @var Cart
      */
-    private ?int $distributorAffiliation = null;
+    private $cart;
 
     /**
-     * @var int|string|null
+     * @var DateTime
      */
-    private int|string|null $expirationMonth = null;
+    private $dateTime;
 
     /**
-     * @var int|string|null
+     * @var int
      */
-    private int|string|null $expirationYear = null;
+    private $distributorAffiliation;
 
     /**
-     * @var Iata|null
+     * @var int
      */
-    private ?Iata $iata = null;
+    private $expirationMonth;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $installments = null;
+    private $expirationYear;
 
     /**
-     * @var string|null
+     * @var Iata
      */
-    private ?string $kind = null;
+    private $iata;
 
     /**
-     * @var string|null
+     * @var int
      */
-    private ?string $last4 = null;
+    private $installments;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $nsu = null;
+    private $kind;
 
     /**
-     * @var int|null
+     * @var string
      */
-    private ?int $origin = null;
+    private $last4;
 
     /**
-     * @var DateTime|null
+     * @var string
      */
-    private ?DateTime $refundDateTime = null;
+    private $nsu;
 
     /**
-     * @var string|null
+     * @var int
      */
-    private ?string $refundId = null;
+    private $origin;
 
     /**
-     * @var array<Refund>
+     * @var string
      */
-    private array $refunds = [];
+    private $reference;
 
     /**
-     * @var DateTime|null
+     * @var string
      */
-    private ?DateTime $requestDateTime = null;
+    private $refundDateTime;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $returnCode = null;
+    private $refundId;
 
     /**
-     * @var string|null
+     * @var array[Refund]
      */
-    private ?string $returnMessage = null;
+    private $refunds;
 
     /**
-     * @var string|null
+     * @var DateTime
      */
-    private ?string $securityCode = null;
+    private $requestDateTime;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $softDescriptor = null;
+    private $returnCode;
 
     /**
-     * @var int|null
+     * @var string
      */
-    private ?int $storageCard = null;
+    private $returnMessage;
+
+    /**
+     * @var string
+     */
+    private $securityCode;
+
+    /**
+     * @var string
+     */
+    private $softDescriptor;
+
+    /**
+     * @var int
+     */
+    private $storageCard;
 
     /**
      * @var bool
      */
-    private ?bool $subscription = null;
+    private $subscription;
 
     /**
-     * @var ThreeDSecure|null
+     * @var ThreeDSecure
      */
-    private ?ThreeDSecure $threeDSecure = null;
+    private $threeDSecure;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $tid = null;
+    private $tid;
 
     /**
-     * @var array<Url>
+     * @var array
      */
-    private array $urls = [];
+    private $urls;
 
     /**
-     * @var SubMerchant|null
+     * @var SubMerchant
      */
-    private ?SubMerchant $subMerchant = null;
+    private $subMerchant;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $paymentFacilitatorID = null;
-
-    /**
-     * @var int|null
-     */
-    private ?int $amount = null;
+    private $paymentFacilitatorID;
 
     /**
      * Transaction constructor.
      *
-     * @param int|float|null $amount
-     * @param string|null    $reference
+     * @param int $amount
+     * @param string $reference
      */
-    public function __construct(int|float|null $amount = null, private ?string $reference = null)
+    public function __construct($amount = null, $reference = null)
     {
-        if ($amount !== null) {
-            $this->setAmount($amount);
-        }
+        $this->setAmount($amount);
+        $this->setReference($reference);
     }
 
     /**
      * @param string $url
      * @param string $kind
      *
-     * @return $this
+     * @return Transaction
      */
-    public function addUrl(string $url, string $kind = Url::CALLBACK): static
+    public function addUrl($url, $kind = Url::CALLBACK)
     {
+        if ($this->urls == null) {
+            $this->urls = [];
+        }
+
         $this->urls[] = new Url($url, $kind);
 
         return $this;
     }
 
     /**
-     * @param int|null $gateway
-     * @param int|null $module
+     * @param integer $gateway
+     * @param integer $module
      *
-     * @return $this
+     * @return Transaction
      */
-    public function additional(?int $gateway = null, ?int $module = null): static
+    public function additional($gateway = null, $module = null)
     {
         $this->additional = new Additional();
-
-        if ($gateway !== null) {
-            $this->additional->setGateway($gateway);
-        }
-
-        if ($module !== null) {
-            $this->additional->setModule($module);
-        }
+        $this->additional->setGateway($gateway);
+        $this->additional->setModule($module);
 
         return $this;
     }
 
     /**
-     * @param string     $cardNumber
-     * @param string     $cardCvv
-     * @param int|string $expirationMonth
-     * @param int|string $expirationYear
-     * @param string     $holderName
+     * @param $cardNumber
+     * @param $cardCvv
+     * @param $expirationYear
+     * @param $expirationMonth
+     * @param $holderName
      *
-     * @return $this this transaction
+     * @return Transaction this transaction
      */
-    public function creditCard(
-        string $cardNumber,
-        string $cardCvv,
-        int|string $expirationMonth,
-        int|string $expirationYear,
-        string $holderName
-    ): static {
+    public function creditCard($cardNumber, $cardCvv, $expirationMonth, $expirationYear, $holderName)
+    {
         return $this->setCard(
             $cardNumber,
             $cardCvv,
@@ -275,23 +274,17 @@ class Transaction implements RedeSerializable, RedeUnserializable
     }
 
     /**
-     * @param string     $cardNumber
-     * @param string     $securityCode
-     * @param int|string $expirationMonth
-     * @param int|string $expirationYear
-     * @param string     $cardHolderName
-     * @param string     $kind
+     * @param $cardNumber
+     * @param $securityCode
+     * @param $expirationMonth
+     * @param $expirationYear
+     * @param $cardHolderName
+     * @param $kind
      *
-     * @return $this this transaction
+     * @return Transaction this transaction
      */
-    public function setCard(
-        string $cardNumber,
-        string $securityCode,
-        int|string $expirationMonth,
-        int|string $expirationYear,
-        string $cardHolderName,
-        string $kind
-    ): static {
+    public function setCard($cardNumber, $securityCode, $expirationMonth, $expirationYear, $cardHolderName, $kind)
+    {
         $this->setCardNumber($cardNumber);
         $this->setSecurityCode($securityCode);
         $this->setExpirationMonth($expirationMonth);
@@ -303,22 +296,17 @@ class Transaction implements RedeSerializable, RedeUnserializable
     }
 
     /**
-     * @param string     $cardNumber
-     * @param string     $cardCvv
-     * @param int|string $expirationMonth
-     * @param int|string $expirationYear
-     * @param string     $holderName
+     * @param $cardNumber
+     * @param $cardCvv
+     * @param $expirationYear
+     * @param $expirationMonth
+     * @param $holderName
      *
-     * @return $this this transaction
+     * @return Transaction this transaction
      */
-    public function debitCard(
-        string $cardNumber,
-        string $cardCvv,
-        int|string $expirationMonth,
-        int|string $expirationYear,
-        string $holderName
-    ): static {
-        $this->capture();
+    public function debitCard($cardNumber, $cardCvv, $expirationMonth, $expirationYear, $holderName)
+    {
+        $this->capture(true);
 
         return $this->setCard(
             $cardNumber,
@@ -333,9 +321,9 @@ class Transaction implements RedeSerializable, RedeUnserializable
     /**
      * @param bool $capture
      *
-     * @return $this
+     * @return Transaction
      */
-    public function capture(bool $capture = true): static
+    public function capture($capture = true)
     {
         if (!$capture && $this->kind === Transaction::DEBIT) {
             throw new InvalidArgumentException('Debit transactions will always be captured');
@@ -346,11 +334,10 @@ class Transaction implements RedeSerializable, RedeUnserializable
     }
 
     /**
-     * @return mixed
-     * @see          \JsonSerializable::jsonSerialize()
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * @return array
+     * @see    \JsonSerializable::jsonSerialize()
      */
-    public function jsonSerialize(): mixed
+    public function jsonSerialize()
     {
         $capture = null;
 
@@ -380,605 +367,19 @@ class Transaction implements RedeSerializable, RedeUnserializable
                 'urls' => $this->urls,
                 'iata' => $this->iata,
                 'additional' => $this->additional
-            ],
-            function ($value) {
-                return !is_null($value);
-            }
+            ], function ($value) {
+            return !is_null($value);
+        }
         );
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getAmount(): ?int
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param int|float $amount
-     *
-     * @return $this
-     */
-    public function setAmount(int|float $amount): static
-    {
-        $this->amount = (int)round($amount * 100);
-        return $this;
-    }
-
-    /**
-     * @return Authorization|null
-     */
-    public function getAuthorization(): ?Authorization
-    {
-        return $this->authorization;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAuthorizationCode(): ?string
-    {
-        return $this->authorizationCode;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCancelId(): ?string
-    {
-        return $this->cancelId;
-    }
-
-    /**
-     * @return bool|Capture|null
-     */
-    public function getCapture(): bool|Capture|null
-    {
-        return $this->capture;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCardBin(): ?string
-    {
-        return $this->cardBin;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCardHolderName(): ?string
-    {
-        return $this->cardHolderName;
-    }
-
-    /**
-     * @param string $cardHolderName
-     *
-     * @return $this
-     */
-    public function setCardHolderName(string $cardHolderName): static
-    {
-        $this->cardHolderName = $cardHolderName;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCardNumber(): ?string
-    {
-        return $this->cardNumber;
-    }
-
-    /**
-     * @param string $cardNumber
-     *
-     * @return $this
-     */
-    public function setCardNumber(string $cardNumber): static
-    {
-        $this->cardNumber = $cardNumber;
-        return $this;
-    }
-
-    /**
-     * @return Cart|null
-     */
-    public function getCart(): ?Cart
-    {
-        return $this->cart;
-    }
-
-    /**
-     * @param Cart $cart
-     *
-     * @return $this
-     */
-    public function setCart(Cart $cart): static
-    {
-        $this->cart = $cart;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getDateTime(): ?DateTime
-    {
-        return $this->dateTime;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getDistributorAffiliation(): ?int
-    {
-        return $this->distributorAffiliation;
-    }
-
-    /**
-     * @param int $distributorAffiliation
-     *
-     * @return $this
-     */
-    public function setDistributorAffiliation(int $distributorAffiliation): static
-    {
-        $this->distributorAffiliation = $distributorAffiliation;
-        return $this;
-    }
-
-    /**
-     * @return int|string|null
-     */
-    public function getExpirationMonth(): int|string|null
-    {
-        return $this->expirationMonth;
-    }
-
-    /**
-     * @param int|string $expirationMonth
-     *
-     * @return $this
-     */
-    public function setExpirationMonth(int|string $expirationMonth): static
-    {
-        $this->expirationMonth = $expirationMonth;
-        return $this;
-    }
-
-    /**
-     * @return int|string|null
-     */
-    public function getExpirationYear(): int|string|null
-    {
-        return $this->expirationYear;
-    }
-
-    /**
-     * @param int|string $expirationYear
-     *
-     * @return $this
-     */
-    public function setExpirationYear(int|string $expirationYear): static
-    {
-        $this->expirationYear = $expirationYear;
-        return $this;
-    }
-
-    /**
-     * @return Iata|null
-     */
-    public function getIata(): ?Iata
-    {
-        return $this->iata;
-    }
-
-    /**
-     * @param string $code
-     * @param string $departureTax
-     *
-     * @return $this
-     */
-    public function setIata(string $code, string $departureTax): static
-    {
-        $this->iata = new Iata();
-        $this->iata->setCode($code);
-        $this->iata->setDepartureTax($departureTax);
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getInstallments(): ?int
-    {
-        return $this->installments;
-    }
-
-    /**
-     * @param int $installments
-     *
-     * @return $this
-     */
-    public function setInstallments(int $installments): static
-    {
-        $this->installments = $installments;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getKind(): ?string
-    {
-        return $this->kind;
-    }
-
-    /**
-     * @param string $kind
-     *
-     * @return $this
-     */
-    public function setKind(string $kind): static
-    {
-        $this->kind = $kind;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLast4(): ?string
-    {
-        return $this->last4;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getNsu(): ?string
-    {
-        return $this->nsu;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getOrigin(): ?int
-    {
-        return $this->origin;
-    }
-
-    /**
-     * @param int $origin
-     *
-     * @return $this
-     */
-    public function setOrigin(int $origin): static
-    {
-        $this->origin = $origin;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    /**
-     * @param string $reference
-     *
-     * @return $this
-     */
-    public function setReference(string $reference): static
-    {
-        $this->reference = $reference;
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getRefundDateTime(): ?DateTime
-    {
-        return $this->refundDateTime;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRefundId(): ?string
-    {
-        return $this->refundId;
-    }
-
-    /**
-     * @return Refund[]
-     */
-    public function getRefunds(): array
-    {
-        return $this->refunds;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getRequestDateTime(): ?DateTime
-    {
-        return $this->requestDateTime;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getReturnCode(): ?string
-    {
-        return $this->returnCode;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getReturnMessage(): ?string
-    {
-        return $this->returnMessage;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSecurityCode(): ?string
-    {
-        return $this->securityCode;
-    }
-
-    /**
-     * @param string $securityCode
-     *
-     * @return $this
-     */
-    public function setSecurityCode(string $securityCode): static
-    {
-        $this->securityCode = $securityCode;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSoftDescriptor(): ?string
-    {
-        return $this->softDescriptor;
-    }
-
-    /**
-     * @param string $softDescriptor
-     *
-     * @return $this
-     */
-    public function setSoftDescriptor(string $softDescriptor): static
-    {
-        $this->softDescriptor = $softDescriptor;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getStorageCard(): ?int
-    {
-        return $this->storageCard;
-    }
-
-    /**
-     * @param int $storageCard
-     *
-     * @return $this
-     */
-    public function setStorageCard(int $storageCard): static
-    {
-        $this->storageCard = $storageCard;
-        return $this;
-    }
-
-    /**
-     * @param string $code
-     * @param string $departureTax
-     *
-     * @return $this
-     */
-    public function iata(string $code, string $departureTax): static
-    {
-        return $this->setIata($code, $departureTax);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSubscription(): bool
-    {
-        return $this->subscription ?? false;
-    }
-
-    /**
-     * @param bool $subscription
-     *
-     * @return $this
-     */
-    public function setSubscription(bool $subscription): static
-    {
-        $this->subscription = $subscription;
-        return $this;
-    }
-
-    /**
-     * @return ThreeDSecure
-     */
-    public function getThreeDSecure(): ThreeDSecure
-    {
-        return $this->threeDSecure ?? new ThreeDSecure();
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getTid(): ?string
-    {
-        return $this->tid;
-    }
-
-    /**
-     * @param string $tid
-     *
-     * @return $this
-     */
-    public function setTid(string $tid): static
-    {
-        $this->tid = $tid;
-        return $this;
-    }
-
-    /**
-     * @return ArrayIterator<int,Url>
-     */
-    public function getUrlsIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->urls);
-    }
-
-    /**
-     * @param string      $softDescriptor
-     * @param string      $paymentFacilitatorID
-     * @param SubMerchant $subMerchant
-     *
-     * @return $this
-     */
-    public function mcc(string $softDescriptor, string $paymentFacilitatorID, SubMerchant $subMerchant): static
-    {
-        $this->setSoftDescriptor($softDescriptor);
-        $this->setPaymentFacilitatorID($paymentFacilitatorID);
-        $this->setSubMerchant($subMerchant);
-
-        return $this;
-    }
-
-    /**
-     * @return SubMerchant|null
-     */
-    public function getSubMerchant(): ?SubMerchant
-    {
-        return $this->subMerchant;
-    }
-
-    /**
-     * @param SubMerchant $subMerchant
-     *
-     * @return $this
-     */
-    public function setSubMerchant(SubMerchant $subMerchant): static
-    {
-        $this->subMerchant = $subMerchant;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPaymentFacilitatorID(): ?string
-    {
-        return $this->paymentFacilitatorID;
-    }
-
-    /**
-     * @param string $paymentFacilitatorID
-     *
-     * @return $this
-     */
-    public function setPaymentFacilitatorID(string $paymentFacilitatorID): static
-    {
-        $this->paymentFacilitatorID = $paymentFacilitatorID;
-        return $this;
-    }
-
-    /**
-     * @param Device      $device
-     * @param string      $onFailure
-     * @param string      $mpi
-     * @param string      $directoryServerTransactionId
-     * @param string|null $userAgent
-     * @param int         $threeDIndicator
-     *
-     * @return $this
-     */
-    public function threeDSecure(
-        Device $device,
-        string $onFailure = ThreeDSecure::DECLINE_ON_FAILURE,
-        string $mpi = ThreeDSecure::MPI_REDE,
-        string $directoryServerTransactionId = '',
-        ?string $userAgent = null,
-        int $threeDIndicator = 2
-    ): static {
-        $threeDSecure = new ThreeDSecure($device, $onFailure, $mpi, $userAgent);
-        $threeDSecure->setThreeDIndicator($threeDIndicator);
-        $threeDSecure->setDirectoryServerTransactionId($directoryServerTransactionId);
-
-        $this->threeDSecure = $threeDSecure;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBrandTid(): ?int
-    {
-        return $this->brandTid;
-    }
-
-    /**
-     * @param int $brandTid
-     *
-     * @return $this
-     */
-    public function setBrandTid(int $brandTid): static
-    {
-        $this->brandTid = $brandTid;
-        return $this;
-    }
-
-    /**
-     * @return Brand|null
-     */
-    public function getBrand(): ?Brand
-    {
-        return $this->brand;
-    }
-
-    /**
-     * @param Brand $brand
-     *
-     * @return $this
-     */
-    public function setBrand(Brand $brand): static
-    {
-        $this->brand = $brand;
-        return $this;
     }
 
     /**
      * @param string $serialized
      *
-     * @return $this
+     * @return Transaction
      * @throws Exception
      */
-    public function jsonUnserialize(string $serialized): static
+    public function jsonUnserialize($serialized)
     {
         $properties = json_decode($serialized);
 
@@ -991,162 +392,652 @@ class Transaction implements RedeSerializable, RedeUnserializable
                 continue;
             }
 
-            match ($property) {
-                'refunds' => $this->unserializeRefunds($property, $value),
-                'urls' => $this->unserializeUrls($property, $value),
-                'capture' => $this->unserializeCapture($property, $value),
-                'authorization' => $this->unserializeAuthorization($property, $value),
-                'additional' => $this->unserializeAdditional($property, $value),
-                'threeDSecure' => $this->unserializeThreeDSecure($property, $value),
-                'requestDateTime', 'dateTime', 'refundDateTime' => $this->unserializeRequestDateTime($property, $value),
-                'brand' => $this->unserializeBrand($property, $value),
-                default => $this->{$property} = $value,
-            };
+            if ($property == 'refunds' && is_array($value)) {
+                $this->refunds = [];
+
+                foreach ($value as $refundValue) {
+                    $this->refunds[] = Refund::create($refundValue);
+                }
+
+                continue;
+            }
+
+            if ($property == 'urls' && is_array($value)) {
+                $this->urls = [];
+
+                foreach ($value as $urlValue) {
+                    $this->urls[] = new Url($urlValue->url, $urlValue->kind);
+                }
+
+                continue;
+            }
+
+            if ($property == 'capture' && is_object($value)) {
+                $this->capture = Capture::create($value);
+
+                continue;
+            }
+
+            if ($property == 'authorization' && is_object($value)) {
+                $this->authorization = Authorization::create($value);
+
+                continue;
+            }
+
+            if ($property == 'additional' && is_object($value)) {
+                $this->additional = Additional::create($value);
+
+                continue;
+            }
+
+            if ($property == 'threeDSecure' && is_object($value)) {
+                $this->threeDSecure = ThreeDSecure::create($value);
+
+                continue;
+            }
+
+            if ($property == 'requestDateTime' || $property == 'dateTime' || $property == 'refundDateTime') {
+                $value = new DateTime($value);
+            }
+
+            if ($property == 'brand') {
+                $this->brand = Brand::create($value);
+
+                continue;
+            }
+
+            $this->$property = $value;
         }
 
         return $this;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return int
      */
-    private function unserializeRefunds(string $property, mixed $value): void
+    public function getAmount()
     {
-        if ($property === 'refunds' && is_array($value)) {
-            $this->refunds = [];
-
-            foreach ($value as $refundValue) {
-                /**
-                 * @var Refund $refund
-                 */
-                $refund = Refund::create($refundValue);
-
-                $this->refunds[] = $refund;
-            }
-        }
+        return $this->amount;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
+     * @param int $amount
+     *
+     * @return Transaction
      */
-    private function unserializeUrls(string $property, mixed $value): void
+    public function setAmount($amount)
     {
-        if ($property === 'urls' && is_array($value)) {
-            $this->urls = [];
-
-            foreach ($value as $urlValue) {
-                $this->urls[] = new Url($urlValue->url, $urlValue->kind);
-            }
-        }
+        $this->amount = round($amount * 100);
+        return $this;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return Authorization
      */
-    private function unserializeCapture(string $property, mixed $value): void
+    public function getAuthorization()
     {
-        if ($property === 'capture' && is_object($value)) {
-            /**
-             * @var Capture $capture
-             */
-            $capture = Capture::create($value);
-
-            $this->capture = $capture;
-        }
+        return $this->authorization;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return string
      */
-    private function unserializeAuthorization(string $property, mixed $value): void
+    public function getAuthorizationCode()
     {
-        if ($property == 'authorization' && is_object($value)) {
-            /**
-             * @var Authorization $authorization
-             */
-            $authorization = Authorization::create($value);
-
-            $this->authorization = $authorization;
-        }
+        return $this->authorizationCode;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return string
      */
-    private function unserializeAdditional(string $property, mixed $value): void
+    public function getCancelId()
     {
-        if ($property == 'additional' && is_object($value)) {
-            /**
-             * @var Additional $additional
-             */
-            $additional = Additional::create($value);
-
-            $this->additional = $additional;
-        }
+        return $this->cancelId;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return bool|Capture
      */
-    private function unserializeThreeDSecure(string $property, mixed $value): void
+    public function getCapture()
     {
-        if ($property == 'threeDSecure' && is_object($value)) {
-            /**
-             * @var ThreeDSecure $threeDSecure
-             */
-            $threeDSecure = ThreeDSecure::create($value);
-
-            $this->threeDSecure = $threeDSecure;
-        }
+        return $this->capture;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return string
      */
-    private function unserializeRequestDateTime(string $property, mixed $value): void
+    public function getCardBin()
     {
-        if ($property == 'requestDateTime' || $property == 'dateTime' || $property == 'refundDateTime') {
-            $value = new DateTime($value);
-        }
-
-        $this->{$property} = $value;
+        return $this->cardBin;
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @return void
-     * @throws Exception
+     * @return string
      */
-    private function unserializeBrand(string $property, mixed $value): void
+    public function getCardHolderName()
     {
-        if ($property == 'brand') {
-            /**
-             * @var Brand $brand
-             */
-            $brand = Brand::create($value);
+        return $this->cardHolderName;
+    }
 
-            $this->brand = $brand;
+    /**
+     * @param string $cardHolderName
+     *
+     * @return Transaction
+     */
+    public function setCardHolderName($cardHolderName)
+    {
+        $this->cardHolderName = $cardHolderName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardNumber()
+    {
+        return $this->cardNumber;
+    }
+
+    /**
+     * @param string $cardNumber
+     *
+     * @return Transaction
+     */
+    public function setCardNumber($cardNumber)
+    {
+        $this->cardNumber = $cardNumber;
+        return $this;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart()
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param Cart $cart
+     *
+     * @return Transaction
+     */
+    public function setCart(Cart $cart)
+    {
+        $this->cart = $cart;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateTime()
+    {
+        return $this->dateTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDistributorAffiliation()
+    {
+        return $this->distributorAffiliation;
+    }
+
+    /**
+     * @param int $distributorAffiliation
+     *
+     * @return Transaction
+     */
+    public function setDistributorAffiliation($distributorAffiliation)
+    {
+        $this->distributorAffiliation = $distributorAffiliation;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpirationMonth()
+    {
+        return $this->expirationMonth;
+    }
+
+    /**
+     * @param int $expirationMonth
+     *
+     * @return Transaction
+     */
+    public function setExpirationMonth($expirationMonth)
+    {
+        $this->expirationMonth = $expirationMonth;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpirationYear()
+    {
+        return $this->expirationYear;
+    }
+
+    /**
+     * @param int $expirationYear
+     *
+     * @return Transaction
+     */
+    public function setExpirationYear($expirationYear)
+    {
+        $this->expirationYear = $expirationYear;
+        return $this;
+    }
+
+    /**
+     * @return Iata
+     */
+    public function getIata()
+    {
+        return $this->iata;
+    }
+
+    /**
+     * @param string $code
+     * @param string $departureTax
+     *
+     * @return Transaction
+     */
+    public function setIata($code, $departureTax)
+    {
+        $this->iata = new Iata();
+        $this->iata->setCode($code);
+        $this->iata->setDepartureTax($departureTax);
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInstallments()
+    {
+        return $this->installments;
+    }
+
+    /**
+     * @param int $installments
+     *
+     * @return Transaction
+     */
+    public function setInstallments($installments)
+    {
+        $this->installments = $installments;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKind()
+    {
+        return $this->kind;
+    }
+
+    /**
+     * @param string $kind
+     *
+     * @return Transaction
+     */
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLast4()
+    {
+        return $this->last4;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNsu()
+    {
+        return $this->nsu;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrigin()
+    {
+        return $this->origin;
+    }
+
+    /**
+     * @param int $origin
+     *
+     * @return Transaction
+     */
+    public function setOrigin($origin)
+    {
+        $this->origin = $origin;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @param string $reference
+     *
+     * @return Transaction
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRefundDateTime()
+    {
+        return $this->refundDateTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRefundId()
+    {
+        return $this->refundId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRefunds()
+    {
+        return $this->refunds;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getRequestDateTime()
+    {
+        return $this->requestDateTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnCode()
+    {
+        return $this->returnCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnMessage()
+    {
+        return $this->returnMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecurityCode()
+    {
+        return $this->securityCode;
+    }
+
+    /**
+     * @param string $securityCode
+     *
+     * @return Transaction
+     */
+    public function setSecurityCode($securityCode)
+    {
+        $this->securityCode = $securityCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSoftDescriptor()
+    {
+        return $this->softDescriptor;
+    }
+
+    /**
+     * @param string $softDescriptor
+     *
+     * @return Transaction
+     */
+    public function setSoftDescriptor($softDescriptor)
+    {
+        $this->softDescriptor = $softDescriptor;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStorageCard()
+    {
+        return $this->storageCard;
+    }
+
+    /**
+     * @param int $storageCard
+     *
+     * @return Transaction
+     */
+    public function setStorageCard($storageCard)
+    {
+        $this->storageCard = $storageCard;
+        return $this;
+    }
+
+    /**
+     * @param $code
+     * @param $departureTax
+     *
+     * @return Transaction
+     */
+    public function iata($code, $departureTax)
+    {
+        return $this->setIata($code, $departureTax);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSubscription()
+    {
+        return $this->subscription;
+    }
+
+    /**
+     * @param bool $subscription
+     *
+     * @return Transaction
+     */
+    public function setSubscription($subscription)
+    {
+        $this->subscription = $subscription;
+        return $this;
+    }
+
+    /**
+     * @return ThreeDSecure
+     */
+    public function getThreeDSecure()
+    {
+        $threeDSecure = $this->threeDSecure;
+
+        if ($threeDSecure == null) {
+            $threeDSecure = new ThreeDSecure();
         }
+
+        return $threeDSecure;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTid()
+    {
+        return $this->tid;
+    }
+
+    /**
+     * @param string $tid
+     *
+     * @return Transaction
+     */
+    public function setTid($tid)
+    {
+        $this->tid = $tid;
+        return $this;
+    }
+
+    /**
+     * @return ArrayIterator
+     */
+    public function getUrlsIterator()
+    {
+        return new ArrayIterator($this->urls);
+    }
+
+    /**
+     * @param $softDescriptor
+     * @param $paymentFacilitatorID
+     * @param SubMerchant $subMerchant
+     *
+     * @return $this
+     */
+    public function mcc($softDescriptor, $paymentFacilitatorID, SubMerchant $subMerchant)
+    {
+        $this->setSoftDescriptor($softDescriptor);
+        $this->setPaymentFacilitatorID($paymentFacilitatorID);
+        $this->setSubMerchant($subMerchant);
+
+        return $this;
+    }
+
+    /**
+     * @return SubMerchant
+     */
+    public function getSubMerchant()
+    {
+        return $this->subMerchant;
+    }
+
+    /**
+     * @param SubMerchant $subMerchant
+     *
+     * @return Transaction
+     */
+    public function setSubMerchant($subMerchant)
+    {
+        $this->subMerchant = $subMerchant;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentFacilitatorID()
+    {
+        return $this->paymentFacilitatorID;
+    }
+
+    /**
+     * @param string $paymentFacilitatorID
+     *
+     * @return Transaction
+     */
+    public function setPaymentFacilitatorID($paymentFacilitatorID)
+    {
+        $this->paymentFacilitatorID = $paymentFacilitatorID;
+        return $this;
+    }
+
+    /**
+     * @param string $onFailure
+     * @param bool $embed
+     * @param string $directoryServerTransactionId
+     * @param string $threeDIndicator
+     *
+     * @return Transaction
+     */
+    public function threeDSecure(
+        $onFailure = ThreeDSecure::DECLINE_ON_FAILURE,
+        $embed = true,
+        $directoryServerTransactionId = "",
+        $threeDIndicator = "1"
+    ) {
+        $threeDSecure = new ThreeDSecure();
+        $threeDSecure->setOnFailure($onFailure);
+        $threeDSecure->setEmbedded($embed);
+        $threeDSecure->setThreeDIndicator($threeDIndicator);
+        $threeDSecure->setDirectoryServerTransactionId($directoryServerTransactionId);
+
+        $this->threeDSecure = $threeDSecure;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBrandTid()
+    {
+        return $this->brandTid;
+    }
+
+    /**
+     * @param int $brandTid
+     *
+     * @return Transaction
+     */
+    public function setBrandTid(int $brandTid)
+    {
+        $this->brandTid = $brandTid;
+        return $this;
+    }
+
+    /**
+     * @return Brand
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param Brand $brand
+     *
+     * @return Transaction
+     */
+    public function setBrand(Brand $brand)
+    {
+        $this->brand = $brand;
+        return $this;
     }
 }

@@ -2,32 +2,52 @@
 
 namespace Rede;
 
+
 class SubMerchant
 {
     /**
+     * @var string
+     */
+    private $mcc;
+
+    /**
+     * @var string
+     */
+    private $city;
+
+    /**
+     * @var string
+     */
+    private $country;
+
+    /**
      * SubMerchant constructor.
      *
-     * @param string $mcc
-     * @param string $city
-     * @param string $country
+     * @param $mcc
+     * @param $city
+     * @param $country
      */
-    public function __construct(private string $mcc, private string $city, private string $country)
+    public function __construct($mcc, $city, $country)
     {
+        $this->setMcc($mcc);
+        $this->setCity($city);
+        $this->setCountry($country);
     }
 
     /**
      * @return string
      */
-    public function getMcc(): string
+    public function getMcc()
     {
         return $this->mcc;
     }
 
     /**
      * @param string $mcc
-     * @return $this
+     *
+     * @return SubMerchant
      */
-    public function setMcc(string $mcc): static
+    public function setMcc($mcc)
     {
         $this->mcc = $mcc;
         return $this;
@@ -36,16 +56,17 @@ class SubMerchant
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity()
     {
         return $this->city;
     }
 
     /**
      * @param string $city
-     * @return $this
+     *
+     * @return SubMerchant
      */
-    public function setCity(string $city): static
+    public function setCity($city)
     {
         $this->city = $city;
         return $this;
@@ -54,18 +75,20 @@ class SubMerchant
     /**
      * @return string
      */
-    public function getCountry(): string
+    public function getCountry()
     {
         return $this->country;
     }
 
     /**
      * @param string $country
-     * @return $this
+     *
+     * @return SubMerchant
      */
-    public function setCountry(string $country): static
+    public function setCountry($country)
     {
         $this->country = $country;
         return $this;
     }
+
 }

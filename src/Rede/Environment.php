@@ -6,39 +6,41 @@ use stdClass;
 
 class Environment implements RedeSerializable
 {
-    public const PRODUCTION = 'https://api.userede.com.br/erede';
-    public const SANDBOX = 'https://api.userede.com.br/desenvolvedores';
-    public const VERSION = 'v1';
-
-    /**
-     * @var string|null
-     */
-    private ?string $ip = null;
-
-    /**
-     * @var string|null
-     */
-    private ?string $sessionId = null;
+    const PRODUCTION = 'https://api.userede.com.br/erede';
+    const SANDBOX = 'https://api.userede.com.br/desenvolvedores';
+    const VERSION = 'v1';
 
     /**
      * @var string
      */
-    private string $endpoint;
+    private $ip;
 
     /**
-     * Creates an environment with its base url and version
+     * @var string
+     */
+    private $sessionId;
+
+    /**
+     * @var string
+     */
+    private $endpoint;
+
+    /**
+     * Creates a environment with its base url and version
      *
      * @param string $baseUrl
+     * @param string $version
      */
-    private function __construct(string $baseUrl)
+    private function __construct($baseUrl, $version = Environment::VERSION)
     {
-        $this->endpoint = sprintf('%s/%s/', $baseUrl, Environment::VERSION);
+        $this->endpoint = sprintf('%s/%s/', $baseUrl, $version);
     }
 
     /**
      * @return Environment A preconfigured production environment
      */
-    public static function production(): Environment
+
+    public static function production()
     {
         return new Environment(Environment::PRODUCTION);
     }
@@ -46,7 +48,7 @@ class Environment implements RedeSerializable
     /**
      * @return Environment A preconfigured sandbox environment
      */
-    public static function sandbox(): Environment
+    public static function sandbox()
     {
         return new Environment(Environment::SANDBOX);
     }
@@ -56,15 +58,15 @@ class Environment implements RedeSerializable
      *
      * @return string Gets the environment endpoint
      */
-    public function getEndpoint(string $service): string
+    public function getEndpoint($service)
     {
         return $this->endpoint . $service;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getIp(): ?string
+    public function getIp()
     {
         return $this->ip;
     }
@@ -72,38 +74,37 @@ class Environment implements RedeSerializable
     /**
      * @param string $ip
      *
-     * @return $this
+     * @return Environment
      */
-    public function setIp(string $ip): static
+    public function setIp($ip)
     {
         $this->ip = $ip;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getSessionId(): ?string
+    public function getSessionId()
     {
         return $this->sessionId;
     }
 
     /**
-     * @param string $sessionId
+     * @param $sessionId
      *
-     * @return $this
+     * @return Environment
      */
-    public function setSessionId(string $sessionId): static
+    public function setSessionId($sessionId)
     {
         $this->sessionId = $sessionId;
         return $this;
     }
 
     /**
-     * @return mixed
-     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
+     * @return array
      */
-    public function jsonSerialize(): mixed
+    public function jsonSerialize()
     {
         $consumer = new stdClass();
         $consumer->ip = $this->ip;

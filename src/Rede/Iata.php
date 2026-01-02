@@ -9,24 +9,24 @@ class Iata implements RedeSerializable
     use SerializeTrait;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $code = null;
+    private $code;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $departureTax = null;
+    private $departureTax;
 
     /**
-     * @var array<Flight>
+     * @var array[Flight]
      */
-    private array $flight = [];
+    private $flight;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCode(): ?string
+    public function getCode()
     {
         return $this->code;
     }
@@ -34,18 +34,18 @@ class Iata implements RedeSerializable
     /**
      * @param string $code
      *
-     * @return $this
+     * @return Iata
      */
-    public function setCode(string $code): static
+    public function setCode($code)
     {
         $this->code = $code;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getDepartureTax(): ?string
+    public function getDepartureTax()
     {
         return $this->departureTax;
     }
@@ -53,18 +53,18 @@ class Iata implements RedeSerializable
     /**
      * @param string $departureTax
      *
-     * @return $this
+     * @return Iata
      */
-    public function setDepartureTax(string $departureTax): static
+    public function setDepartureTax($departureTax)
     {
         $this->departureTax = $departureTax;
         return $this;
     }
 
     /**
-     * @return ArrayIterator<int,Flight>
+     * @return ArrayIterator
      */
-    public function getFlightIterator(): ArrayIterator
+    public function getFlightIterator()
     {
         return new ArrayIterator($this->flight);
     }
@@ -72,9 +72,9 @@ class Iata implements RedeSerializable
     /**
      * @param Flight $flight
      *
-     * @return $this
+     * @return Iata
      */
-    public function setFlight(Flight $flight): static
+    public function setFlight($flight)
     {
         $this->flight = [];
         $this->addFlight($flight);
@@ -85,10 +85,14 @@ class Iata implements RedeSerializable
     /**
      * @param Flight $flight
      *
-     * @return $this
+     * @return Iata
      */
-    public function addFlight(Flight $flight): static
+    public function addFlight(Flight $flight)
     {
+        if ($this->flight === null) {
+            $this->flight = [];
+        }
+
         $this->flight[] = $flight;
 
         return $this;

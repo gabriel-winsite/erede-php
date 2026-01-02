@@ -13,20 +13,20 @@ use RuntimeException;
 abstract class AbstractTransactionsService extends AbstractService
 {
     /**
-     * @var ?Transaction
+     * @var Transaction
      */
-    protected ?Transaction $transaction;
+    protected $transaction;
 
     /**
      * @var string
      */
-    private string $tid;
+    private $tid;
 
     /**
      * AbstractTransactionsService constructor.
      *
-     * @param Store                $store
-     * @param Transaction|null     $transaction
+     * @param Store $store
+     * @param Transaction|null $transaction
      * @param LoggerInterface|null $logger
      */
     public function __construct(Store $store, Transaction $transaction = null, LoggerInterface $logger = null)
@@ -42,47 +42,39 @@ abstract class AbstractTransactionsService extends AbstractService
      * @throws RuntimeException
      * @throws RedeException
      */
-    public function execute(): Transaction
+    public function execute()
     {
-        $json = json_encode($this->transaction);
-
-        if (!is_string($json)) {
-            throw new RuntimeException('Problem converting the Transaction object to json');
-        }
-
-        return $this->sendRequest($json, AbstractService::POST);
+        return $this->sendRequest(json_encode($this->transaction), AbstractService::POST);
     }
 
     /**
      * @return string
      */
-    public function getTid(): string
+    public function getTid()
     {
         return $this->tid;
     }
 
     /**
      * @param string $tid
-     * @return $this
      */
-    public function setTid(string $tid): static
+    public function setTid($tid)
     {
         $this->tid = $tid;
-        return $this;
     }
 
     /**
      * @return string
      * @see    AbstractService::getService()
      */
-    protected function getService(): string
+    protected function getService()
     {
         return 'transactions';
     }
 
     /**
      * @param string $response
-     * @param int    $statusCode
+     * @param string $statusCode
      *
      * @return Transaction
      * @throws RedeException
@@ -90,7 +82,7 @@ abstract class AbstractTransactionsService extends AbstractService
      * @throws Exception
      * @see    AbstractService::parseResponse()
      */
-    protected function parseResponse(string $response, int $statusCode): Transaction
+    protected function parseResponse($response, $statusCode)
     {
         $previous = null;
 
@@ -104,10 +96,10 @@ abstract class AbstractTransactionsService extends AbstractService
             $previous = $e;
         }
 
-        if ($statusCode >= 400) {
+        if ((int)$statusCode >= 400) {
             throw new RedeException(
-                $this->transaction->getReturnMessage() ?? 'Error on getting the content from the API',
-                (int)$this->transaction->getReturnCode(),
+                $this->transaction->getReturnMessage(),
+                $this->transaction->getReturnCode(),
                 $previous
             );
         }

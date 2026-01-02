@@ -5,12 +5,12 @@ namespace Rede;
 trait SerializeTrait
 {
     /**
-     * @return array<string,mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    public function jsonSerialize()
     {
-        return array_filter(get_object_vars($this), function ($value) {
-            return $value !== null;
+        return array_filter(get_object_vars($this), function ($v) {
+            return $v !== null;
         });
     }
 }

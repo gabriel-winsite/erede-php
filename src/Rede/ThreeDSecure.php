@@ -7,153 +7,91 @@ class ThreeDSecure implements RedeSerializable
     use CreateTrait;
     use SerializeTrait;
 
-    public const DATA_ONLY = 'DATA_ONLY';
-
-    public const CONTINUE_ON_FAILURE = 'continue';
-    public const DECLINE_ON_FAILURE = 'decline';
-
-    public const MPI_REDE = 'mpi_rede';
-    public const MPI_THIRD_PARTY = 'mpi_third_party';
-
-    /**
-     * @var string|null
-     */
-    private ?string $cavv = null;
-
-    /**
-     * @var string|null
-     */
-    private ?string $eci = null;
-
-    /**
-     * @var string|null
-     */
-    private ?string $url = null;
-
-    /**
-     * @var string|null
-     */
-    private ?string $xid = null;
-
-    /**
-     * @var int
-     */
-    private int $threeDIndicator = 2;
-
-    /**
-     * @var string|null
-     */
-    private ?string $DirectoryServerTransactionId = null;
+    const CONTINUE_ON_FAILURE = 'continue';
+    const DECLINE_ON_FAILURE = 'decline';
 
     /**
      * @var string
      */
-    private string $userAgent;
+    private $cavv;
+
+    /**
+     * @var string
+     */
+    private $eci;
 
     /**
      * @var bool
      */
-    private bool $embedded;
+    private $embedded = true;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $returnCode = null;
+    private $onFailure;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $returnMessage = null;
+    private $url;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $challengePreference = null;
+    private $userAgent;
+
+    /**
+     * @var string
+     */
+    private $xid;
+
+    /**
+     * @var string
+     */
+    private $threeDIndicator = "1";
+
+    /**
+     * @var string
+     */
+    private $DirectoryServerTransactionId;
 
     /**
      * ThreeDSecure constructor.
-     *
-     * @param Device|null $Device    User device data.
-     * @param string      $onFailure What to do in case of failure.
-     * @param string      $mpi       The MPI is from Rede or third party.
-     * @param string|null $userAgent The user' user-agent.
      */
-    public function __construct(
-        private readonly ?Device $Device = null,
-        private string $onFailure = self::DECLINE_ON_FAILURE,
-        string $mpi = ThreeDSecure::MPI_REDE,
-        string $userAgent = null
-    ) {
-        if ($userAgent === null) {
-            $userAgent = eRede::USER_AGENT;
+    public function __construct()
+    {
+        $userAgent = eRede::USER_AGENT;
 
-            if (isset($_SERVER['HTTP_USER_AGENT'])) {
-                $userAgent = $_SERVER['HTTP_USER_AGENT'];
-            }
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
 
-        $this->embedded = $mpi === ThreeDSecure::MPI_REDE;
-        $this->userAgent = $userAgent;
+        $this->setUserAgent($userAgent);
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReturnCode(): ?string
-    {
-        return $this->returnCode;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getReturnMessage(): ?string
-    {
-        return $this->returnMessage;
-    }
-
-    /**
-     * @return Device
-     */
-    public function getDevice(): Device
-    {
-        return $this->Device;
-    }
-
-    /**
-     * @return int
-     */
-    public function getThreeDIndicator(): int
+    public function getThreeDIndicator()
     {
         return $this->threeDIndicator;
     }
 
     /**
-     * @param int $threeDIndicator
+     * @param string $threeDIndicator
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setThreeDIndicator(int $threeDIndicator): static
+    public function setThreeDIndicator($threeDIndicator)
     {
-        /**
-         * Support for 3DS 1 will be discontinued.
-         */
-        if ($threeDIndicator < 2) {
-            trigger_error(
-                'Effective 15 October 2022, support for 3DS 1 and all related technology is discontinued.',
-                time() > strtotime('2022-10-15') ? E_USER_ERROR : E_USER_DEPRECATED
-            );
-        }
-
         $this->threeDIndicator = $threeDIndicator;
-
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getDirectoryServerTransactionId(): ?string
+    public function getDirectoryServerTransactionId()
     {
         return $this->DirectoryServerTransactionId;
     }
@@ -161,18 +99,18 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $DirectoryServerTransactionId
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setDirectoryServerTransactionId(string $DirectoryServerTransactionId): static
+    public function setDirectoryServerTransactionId($DirectoryServerTransactionId)
     {
         $this->DirectoryServerTransactionId = $DirectoryServerTransactionId;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCavv(): ?string
+    public function getCavv()
     {
         return $this->cavv;
     }
@@ -180,18 +118,18 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $cavv
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setCavv(string $cavv): static
+    public function setCavv($cavv)
     {
         $this->cavv = $cavv;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getEci(): ?string
+    public function getEci()
     {
         return $this->eci;
     }
@@ -199,9 +137,9 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $eci
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setEci(string $eci): static
+    public function setEci($eci)
     {
         $this->eci = $eci;
         return $this;
@@ -210,7 +148,7 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @return string
      */
-    public function getOnFailure(): string
+    public function getOnFailure()
     {
         return $this->onFailure;
     }
@@ -218,18 +156,18 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $onFailure
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setOnFailure(string $onFailure): static
+    public function setOnFailure($onFailure)
     {
         $this->onFailure = $onFailure;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getUrl(): ?string
+    public function getUrl()
     {
         return $this->url;
     }
@@ -237,18 +175,18 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $url
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setUrl(string $url): static
+    public function setUrl($url)
     {
         $this->url = $url;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getUserAgent(): ?string
+    public function getUserAgent()
     {
         return $this->userAgent;
     }
@@ -256,18 +194,18 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $userAgent
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setUserAgent(string $userAgent): static
+    public function setUserAgent($userAgent)
     {
         $this->userAgent = $userAgent;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getXid(): ?string
+    public function getXid()
     {
         return $this->xid;
     }
@@ -275,9 +213,9 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param string $xid
      *
-     * @return $this
+     * @return ThreeDSecure
      */
-    public function setXid(string $xid): static
+    public function setXid($xid)
     {
         $this->xid = $xid;
         return $this;
@@ -286,7 +224,7 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @return bool
      */
-    public function isEmbedded(): bool
+    public function isEmbedded()
     {
         return $this->embedded;
     }
@@ -294,29 +232,11 @@ class ThreeDSecure implements RedeSerializable
     /**
      * @param bool $embedded
      *
-     * @return $this
-     */
-    public function setEmbedded(bool $embedded): static
-    {
-        $this->embedded = $embedded;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getChallengePreference(): ?string
-    {
-        return $this->challengePreference;
-    }
-
-    /**
-     * @param string|null $challengePreference
      * @return ThreeDSecure
      */
-    public function setChallengePreference(?string $challengePreference): ThreeDSecure
+    public function setEmbedded($embedded)
     {
-        $this->challengePreference = $challengePreference;
+        $this->embedded = $embedded;
         return $this;
     }
 }

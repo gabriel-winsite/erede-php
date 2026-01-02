@@ -8,24 +8,40 @@ class Store
      * Which environment will this store used for?
      * @var Environment
      */
-    private Environment $environment;
+    private $environment;
+
+    /**
+     * The unique identifier of the store
+     * @var string
+     */
+    private $filiation;
+
+    /**
+     * The security token that will be used to guarantee the transaction integrity
+     * @var string
+     */
+    private $token;
 
     /**
      * Creates a store.
      *
-     * @param string           $filiation
-     * @param string           $token
+     * @param string $filiation
+     * @param string $token
      * @param Environment|null $environment if none provided, production will be used.
      */
-    public function __construct(private string $filiation, private string $token, ?Environment $environment = null)
+    public function __construct($filiation, $token, Environment $environment = null)
     {
-        $this->environment = $environment ?? Environment::production();
+        $environment = $environment != null ? $environment : Environment::production();
+
+        $this->setFiliation($filiation);
+        $this->setToken($token);
+        $this->setEnvironment($environment);
     }
 
     /**
      * @return Environment
      */
-    public function getEnvironment(): Environment
+    public function getEnvironment()
     {
         return $this->environment;
     }
@@ -33,9 +49,9 @@ class Store
     /**
      * @param Environment $environment
      *
-     * @return $this
+     * @return Store
      */
-    public function setEnvironment(Environment $environment): static
+    public function setEnvironment(Environment $environment)
     {
         $this->environment = $environment;
         return $this;
@@ -44,7 +60,7 @@ class Store
     /**
      * @return string
      */
-    public function getFiliation(): string
+    public function getFiliation()
     {
         return $this->filiation;
     }
@@ -52,9 +68,9 @@ class Store
     /**
      * @param string $filiation
      *
-     * @return $this
+     * @return Store
      */
-    public function setFiliation(string $filiation): static
+    public function setFiliation($filiation)
     {
         $this->filiation = $filiation;
         return $this;
@@ -63,7 +79,7 @@ class Store
     /**
      * @return string
      */
-    public function getToken(): string
+    public function getToken()
     {
         return $this->token;
     }
@@ -71,9 +87,9 @@ class Store
     /**
      * @param string $token
      *
-     * @return $this
+     * @return Store
      */
-    public function setToken(string $token): static
+    public function setToken($token)
     {
         $this->token = $token;
         return $this;

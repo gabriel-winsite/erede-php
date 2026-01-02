@@ -6,51 +6,69 @@ class Item implements RedeSerializable
 {
     use SerializeTrait;
 
-    public const PHYSICAL = 1;
-    public const DIGITAL = 2;
-    public const SERVICE = 3;
-    public const AIRLINE = 4;
+    const PHYSICAL = 1;
+    const DIGITAL = 2;
+    const SERVICE = 3;
+    const AIRLINE = 4;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $amount = null;
+    private $amount;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $description = null;
+    private $description;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $discount = null;
+    private $discount;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $freight = null;
+    private $freight;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $shippingType = null;
+    private $id;
+
+    /**
+     * @var int
+     */
+    private $quantity;
+
+    /**
+     * @var string
+     */
+    private $shippingType;
+
+    /**
+     * @var int
+     */
+    private $type;
 
     /**
      * Item constructor.
      *
-     * @param string $id
-     * @param int    $quantity
-     * @param int    $type
+     * @param $id
+     * @param $quantity
+     * @param int $type
      */
-    public function __construct(private string $id, private int $quantity, private int $type = Item::PHYSICAL)
+    public function __construct($id, $quantity, $type = Item::PHYSICAL)
     {
+        $this->setId($id);
+        $this->setQuantity($quantity);
+        $this->setType($type);
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getAmount(): ?int
+    public function getAmount()
     {
         return $this->amount;
     }
@@ -58,18 +76,18 @@ class Item implements RedeSerializable
     /**
      * @param int $amount
      *
-     * @return $this
+     * @return Item
      */
-    public function setAmount(int $amount): static
+    public function setAmount($amount)
     {
         $this->amount = $amount;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription()
     {
         return $this->description;
     }
@@ -77,18 +95,18 @@ class Item implements RedeSerializable
     /**
      * @param string $description
      *
-     * @return $this
+     * @return Item
      */
-    public function setDescription(string $description): static
+    public function setDescription($description)
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getDiscount(): ?int
+    public function getDiscount()
     {
         return $this->discount;
     }
@@ -96,18 +114,18 @@ class Item implements RedeSerializable
     /**
      * @param int $discount
      *
-     * @return $this
+     * @return Item
      */
-    public function setDiscount(int $discount): static
+    public function setDiscount($discount)
     {
         $this->discount = $discount;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getFreight(): ?int
+    public function getFreight()
     {
         return $this->freight;
     }
@@ -115,18 +133,18 @@ class Item implements RedeSerializable
     /**
      * @param int $freight
      *
-     * @return $this
+     * @return Item
      */
-    public function setFreight(int $freight): static
+    public function setFreight($freight)
     {
         $this->freight = $freight;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId()
     {
         return $this->id;
     }
@@ -134,18 +152,18 @@ class Item implements RedeSerializable
     /**
      * @param string $id
      *
-     * @return $this
+     * @return Item
      */
-    public function setId(string $id): static
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getQuantity(): ?int
+    public function getQuantity()
     {
         return $this->quantity;
     }
@@ -153,18 +171,18 @@ class Item implements RedeSerializable
     /**
      * @param int $quantity
      *
-     * @return $this
+     * @return Item
      */
-    public function setQuantity(int $quantity): static
+    public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getShippingType(): ?string
+    public function getShippingType()
     {
         return $this->shippingType;
     }
@@ -172,18 +190,18 @@ class Item implements RedeSerializable
     /**
      * @param string $shippingType
      *
-     * @return $this
+     * @return Item
      */
-    public function setShippingType(string $shippingType): static
+    public function setShippingType($shippingType)
     {
         $this->shippingType = $shippingType;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getType(): ?int
+    public function getType()
     {
         return $this->type;
     }
@@ -191,9 +209,9 @@ class Item implements RedeSerializable
     /**
      * @param int $type
      *
-     * @return $this
+     * @return Item
      */
-    public function setType(int $type): static
+    public function setType($type)
     {
         $this->type = $type;
         return $this;

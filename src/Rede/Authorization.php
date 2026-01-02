@@ -3,397 +3,416 @@
 namespace Rede;
 
 use DateTime;
+use Exception;
 
 class Authorization
 {
     use CreateTrait;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $affiliation = null;
+    private $affiliation;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $amount = null;
+    private $amount;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $authorizationCode = null;
+    private $authorizationCode;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $cardBin = null;
+    private $cardBin;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $cardHolderName = null;
+    private $cardHolderName;
 
     /**
-     * @var DateTime|null
+     * @var DateTime
      */
-    private ?DateTime $dateTime = null;
+    private $dateTime;
 
     /**
-     * @var int|null
+     * @var int
      */
-    private ?int $installments = null;
+    private $installments;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $kind = null;
+    private $kind;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $last4 = null;
+    private $last4;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $nsu = null;
+    private $nsu;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $origin = null;
+    private $origin;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $reference = null;
+    private $reference;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $returnCode = null;
+    private $returnCode;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $returnMessage = null;
+    private $returnMessage;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $status = null;
+    private $status;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $subscription = null;
+    private $subscription;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $tid = null;
+    private $tid;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAffiliation(): ?string
+    public function getAffiliation()
     {
         return $this->affiliation;
     }
 
     /**
-     * @param string|null $affiliation
-     * @return $this
+     * @param string $affiliation
+     *
+     * @return Authorization
      */
-    public function setAffiliation(?string $affiliation): static
+    public function setAffiliation($affiliation)
     {
         $this->affiliation = $affiliation;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getAmount(): ?int
+    public function getAmount()
     {
         return $this->amount;
     }
 
     /**
-     * @param int|null $amount
-     * @return $this
+     * @param int $amount
+     *
+     * @return Authorization
      */
-    public function setAmount(?int $amount): static
+    public function setAmount($amount)
     {
         $this->amount = $amount;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAuthorizationCode(): ?string
+    public function getAuthorizationCode()
     {
         return $this->authorizationCode;
     }
 
     /**
-     * @param string|null $authorizationCode
-     * @return $this
+     * @param string $authorizationCode
+     *
+     * @return Authorization
      */
-    public function setAuthorizationCode(?string $authorizationCode): static
+    public function setAuthorizationCode($authorizationCode)
     {
         $this->authorizationCode = $authorizationCode;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCardBin(): ?string
+    public function getCardBin()
     {
         return $this->cardBin;
     }
 
     /**
-     * @param string|null $cardBin
-     * @return $this
+     * @param string $cardBin
+     *
+     * @return Authorization
      */
-    public function setCardBin(?string $cardBin): static
+    public function setCardBin($cardBin)
     {
         $this->cardBin = $cardBin;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCardHolderName(): ?string
+    public function getCardHolderName()
     {
         return $this->cardHolderName;
     }
 
     /**
-     * @param string|null $cardHolderName
-     * @return $this
+     * @param string $cardHolderName
+     *
+     * @return Authorization
      */
-    public function setCardHolderName(?string $cardHolderName): static
+    public function setCardHolderName($cardHolderName)
     {
         $this->cardHolderName = $cardHolderName;
         return $this;
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getDateTime(): ?DateTime
+    public function getDateTime()
     {
         return $this->dateTime;
     }
 
     /**
-     * @param DateTime|null $dateTime
-     * @return $this
+     * @param string $dateTime
+     *
+     * @return Authorization
+     * @throws Exception
      */
-    public function setDateTime(?DateTime $dateTime): static
+    public function setDateTime($dateTime)
     {
-        $this->dateTime = $dateTime;
+        $this->dateTime = new DateTime($dateTime);
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getInstallments(): ?int
+    public function getInstallments()
     {
         return $this->installments;
     }
 
     /**
-     * @param int|null $installments
-     * @return $this
+     * @param int $installments
+     *
+     * @return Authorization
      */
-    public function setInstallments(?int $installments): static
+    public function setInstallments($installments)
     {
         $this->installments = $installments;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getKind(): ?string
+    public function getKind()
     {
         return $this->kind;
     }
 
     /**
-     * @param string|null $kind
-     * @return $this
+     * @param string $kind
+     *
+     * @return Authorization
      */
-    public function setKind(?string $kind): static
+    public function setKind($kind)
     {
         $this->kind = $kind;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getLast4(): ?string
+    public function getLast4()
     {
         return $this->last4;
     }
 
     /**
-     * @param string|null $last4
-     * @return $this
+     * @param string $last4
+     *
+     * @return Authorization
      */
-    public function setLast4(?string $last4): static
+    public function setLast4($last4)
     {
         $this->last4 = $last4;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getNsu(): ?string
+    public function getNsu()
     {
         return $this->nsu;
     }
 
     /**
-     * @param string|null $nsu
-     * @return $this
+     * @param string $nsu
+     *
+     * @return Authorization
      */
-    public function setNsu(?string $nsu): static
+    public function setNsu($nsu)
     {
         $this->nsu = $nsu;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getOrigin(): ?string
+    public function getOrigin()
     {
         return $this->origin;
     }
 
     /**
-     * @param string|null $origin
-     * @return $this
+     * @param string $origin
+     *
+     * @return Authorization
      */
-    public function setOrigin(?string $origin): static
+    public function setOrigin($origin)
     {
         $this->origin = $origin;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReference(): ?string
+    public function getReference()
     {
         return $this->reference;
     }
 
     /**
-     * @param string|null $reference
-     * @return $this
+     * @param string $reference
+     *
+     * @return Authorization
      */
-    public function setReference(?string $reference): static
+    public function setReference($reference)
     {
         $this->reference = $reference;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReturnCode(): ?string
+    public function getReturnCode()
     {
         return $this->returnCode;
     }
 
     /**
-     * @param string|null $returnCode
-     * @return $this
+     * @param string $returnCode
+     *
+     * @return Authorization
      */
-    public function setReturnCode(?string $returnCode): static
+    public function setReturnCode($returnCode)
     {
         $this->returnCode = $returnCode;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReturnMessage(): ?string
+    public function getReturnMessage()
     {
         return $this->returnMessage;
     }
 
     /**
-     * @param string|null $returnMessage
-     * @return $this
+     * @param string $returnMessage
+     *
+     * @return Authorization
      */
-    public function setReturnMessage(?string $returnMessage): static
+    public function setReturnMessage($returnMessage)
     {
         $this->returnMessage = $returnMessage;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getStatus(): ?string
+    public function getStatus()
     {
         return $this->status;
     }
 
     /**
-     * @param string|null $status
-     * @return $this
+     * @param string $status
+     *
+     * @return Authorization
      */
-    public function setStatus(?string $status): static
+    public function setStatus($status)
     {
         $this->status = $status;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getSubscription(): ?string
+    public function getSubscription()
     {
         return $this->subscription;
     }
 
     /**
-     * @param string|null $subscription
-     * @return $this
+     * @param string $subscription
+     *
+     * @return Authorization
      */
-    public function setSubscription(?string $subscription): static
+    public function setSubscription($subscription)
     {
         $this->subscription = $subscription;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTid(): ?string
+    public function getTid()
     {
         return $this->tid;
     }
 
     /**
-     * @param string|null $tid
-     * @return $this
+     * @param string $tid
+     *
+     * @return Authorization
      */
-    public function setTid(?string $tid): static
+    public function setTid($tid)
     {
         $this->tid = $tid;
         return $this;

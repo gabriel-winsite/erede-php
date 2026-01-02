@@ -6,47 +6,54 @@ class Url implements RedeSerializable
 {
     use SerializeTrait;
 
-    public const CALLBACK = 'callback';
-    public const THREE_D_SECURE_FAILURE = 'threeDSecureFailure';
-    public const THREE_D_SECURE_SUCCESS = 'threeDSecureSuccess';
+    const CALLBACK = 'callback';
+    const THREE_D_SECURE_FAILURE = 'threeDSecureFailure';
+    const THREE_D_SECURE_SUCCESS = 'threeDSecureSuccess';
 
-    public function __construct(private string $url, private string $kind = Url::CALLBACK)
+    private $kind = Url::CALLBACK;
+    private $url;
+
+    public function __construct($url, $kind = Url::CALLBACK)
     {
+        $this->setUrl($url);
+        $this->setKind($kind);
     }
 
     /**
      * @return string
      */
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     * @return $this
-     */
-    public function setUrl(string $url): static
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKind(): string
+    public function getKind()
     {
         return $this->kind;
     }
 
     /**
      * @param string $kind
-     * @return $this
+     *
+     * @return Url
      */
-    public function setKind(string $kind): static
+    public function setKind($kind)
     {
         $this->kind = $kind;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param mixed $url
+     *
+     * @return Url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
         return $this;
     }
 }

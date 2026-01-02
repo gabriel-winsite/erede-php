@@ -2,33 +2,26 @@
 
 namespace Rede;
 
-use DateTime;
-use Exception;
+use stdClass;
 
 trait CreateTrait
 {
     /**
-     * @param object $data
+     * @param stdClass $data
      *
-     * @return object
-     * @throws Exception
+     * @return mixed
      */
-    public static function create(object $data): object
+    static public function create(stdClass $data)
     {
-        $object = new self();
-        $dataKeys = get_object_vars($data);
-        $objectKeys = get_object_vars($object);
+        $obj = new self();
+        $vars = get_object_vars($obj);
 
-        foreach ($dataKeys as $property => $value) {
-            if (array_key_exists($property, $objectKeys)) {
-                if ($property == 'requestDateTime' || $property == 'dateTime' || $property == 'refundDateTime') {
-                    $value = new DateTime($value);
-                }
-
-                $object->{$property} = $value;
+        foreach ($data as $property => $value) {
+            if (array_key_exists($property, $vars)) {
+                $obj->$property = $value;
             }
         }
 
-        return $object;
+        return $obj;
     }
 }

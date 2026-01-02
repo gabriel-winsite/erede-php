@@ -2,23 +2,14 @@
 
 SDK de integração eRede
 
-# Funcionalidades
-
-Este SDK possui as seguintes funcionalidades:
-* Autorização
-* Captura
-* Consultas
-* Cancelamento
-* 3DS2
-* Zero dollar
-* iata
-* MCC dinâmico.
-
 # Instalação
 
 ## Dependências
 
-* PHP >= 8.1
+* PHP >= 7.2
+
+**Atenção:** o PHP 7.2 tem atualizações de segurança apenas até 30 de Novembro de 2020. Por motivos de segurança, recomendamos que atualize a versão
+seu PHP para a versão mais recente disponível. Veja mais sobre as versões suportadas em [Suportted Versions](https://www.php.net/supported-versions.php).
 
 ## Instalando o SDK
 
@@ -54,7 +45,7 @@ as variáveis de ambiente `REDE_PV` e `REDE_TOKEN` com suas credenciais da API. 
 export REDE_PV=1234
 export REDE_TOKEN=5678
 
-./tests
+vendor/bin/phpunit --testdox --colors='always' test
 ```
 
 Os testes também podem ser executados através de um container com a configuração ideal para o projeto. Para isso, basta
@@ -64,7 +55,7 @@ fazer:
 docker build . -t erede-docker
 docker run -e REDE_PV='1234' -e REDE_TOKEN='5678' erede-docker
 ```
-````
+
 Caso necessário, o SDK possui a possibilidade de logs de depuração que podem ser utilizados ao executar os testes. Para isso, 
 basta exportar a variável de ambiente `REDE_DEBUG` com o valor 1:
 
@@ -349,17 +340,7 @@ $transaction = (new Transaction(25, 'pedido' . time()))->debitCard(
 );
 
 // Configura o 3dSecure para autenticação
-$transaction->threeDSecure(
-    new Device(
-        ColorDepth: 1,
-        DeviceType3ds: 'BROWSER',
-        JavaEnabled: false,
-        Language: 'BR',
-        ScreenHeight: 500,
-        ScreenWidth: 500,
-        TimeZoneOffset: 3
-    )
-);
+$transaction->threeDSecure(ThreeDSecure::DECLINE_ON_FAILURE);
 $transaction->addUrl('https://redirecturl.com/3ds/success', Url::THREE_D_SECURE_SUCCESS);
 $transaction->addUrl('https://redirecturl.com/3ds/failure', Url::THREE_D_SECURE_FAILURE);
 
