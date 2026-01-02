@@ -247,7 +247,7 @@ abstract class AbstractService
         }
 
         $curl = curl_init($tokenUrl);
-        if (!$curl instanceof CurlHandle) {
+        if ($curl === false || !is_resource($curl)) {
             throw new RuntimeException('Was not possible to create a curl instance for OAuth token.');
         }
 

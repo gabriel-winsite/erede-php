@@ -8,7 +8,8 @@ class Environment implements RedeSerializable
 {
     const PRODUCTION = 'https://api.userede.com.br/erede';
     const SANDBOX = 'https://api.userede.com.br/desenvolvedores';
-    const VERSION = 'v1';
+    const VERSION_V1 = 'v1';
+    const VERSION_V2 = 'v2';
 
     /**
      * OAuth2 token endpoints
@@ -42,7 +43,7 @@ class Environment implements RedeSerializable
      * @param string $baseUrl
      * @param string $version
      */
-    private function __construct($baseUrl, $version = Environment::VERSION)
+    private function __construct($baseUrl, $version = Environment::VERSION_V1)
     {
         $this->endpoint = sprintf('%s/%s/', $baseUrl, $version);
 
@@ -56,18 +57,21 @@ class Environment implements RedeSerializable
     }
 
     /**
+     * @param string $version
      * @return Environment A preconfigured production environment
      */
 
-    public static function production()
+    public static function production($version = null)
     {
         return new Environment(Environment::PRODUCTION);
     }
 
     /**
+     * @param string $version
+     *
      * @return Environment A preconfigured sandbox environment
      */
-    public static function sandbox()
+    public static function sandbox($version = null)
     {
         return new Environment(Environment::SANDBOX);
     }
