@@ -11,6 +11,12 @@ class Environment implements RedeSerializable
     const VERSION = 'v1';
 
     /**
+     * OAuth2 token endpoints
+     */
+    public const OAUTH_TOKEN_PRODUCTION = 'https://api.userede.com.br/redelabs/oauth2/token';
+    public const OAUTH_TOKEN_SANDBOX = 'https://rl7-sandbox-api.useredecloud.com.br/oauth2/token';
+
+    /**
      * @var string
      */
     private $ip;
@@ -26,6 +32,11 @@ class Environment implements RedeSerializable
     private $endpoint;
 
     /**
+     * @var string OAuth2 token endpoint URL
+     */
+    private $oauthTokenUrl;
+
+    /**
      * Creates a environment with its base url and version
      *
      * @param string $baseUrl
@@ -34,6 +45,14 @@ class Environment implements RedeSerializable
     private function __construct($baseUrl, $version = Environment::VERSION)
     {
         $this->endpoint = sprintf('%s/%s/', $baseUrl, $version);
+
+        if ($baseUrl === Environment::PRODUCTION) {
+            $this->oauthTokenUrl = Environment::OAUTH_TOKEN_PRODUCTION;
+        } elseif ($baseUrl === Environment::SANDBOX) {
+            $this->oauthTokenUrl = Environment::OAUTH_TOKEN_SANDBOX;
+        } else {
+            $this->oauthTokenUrl = rtrim($baseUrl, '/') . '/oauth2/token';
+        }
     }
 
     /**
@@ -61,6 +80,24 @@ class Environment implements RedeSerializable
     public function getEndpoint($service)
     {
         return $this->endpoint . $service;
+    }
+
+    /**
+     * @return string OAuth2 token endpoint URL
+     */
+    public function getOAuthTokenUrl()
+    {
+        return $this->oauthTokenUrl;
+    }
+
+    /**
+     * @param string $oauthTokenUrl
+     * @return $this
+     */
+    public function setOAuthTokenUrl(string $oauthTokenUrl)
+    {
+        $this->oauthTokenUrl = $oauthTokenUrl;
+        return $this;
     }
 
     /**
