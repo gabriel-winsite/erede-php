@@ -1,5 +1,5 @@
 {
-  "name": "developersrede/erede-php",
+  "name": "gabriel-winsite/erede-php",
   "version": "5.1.3",
   "description": "e.Rede integration SDK",
   "minimum-stability": "stable",
@@ -24,6 +24,10 @@
     {
       "name": "João Batista Neto",
       "email": "neto.joaobatista@gmail.com"
+    },
+    {
+      "name": "Gabriel Candeias",
+      "email": "gabriel@winsite.com.br"
     }
   ]
 }
