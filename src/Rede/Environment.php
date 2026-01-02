@@ -63,7 +63,7 @@ class Environment implements RedeSerializable
 
     public static function production($version = null)
     {
-        return new Environment(Environment::PRODUCTION);
+        return new Environment(Environment::PRODUCTION, $version);
     }
 
     /**
@@ -73,7 +73,7 @@ class Environment implements RedeSerializable
      */
     public static function sandbox($version = null)
     {
-        return new Environment(Environment::SANDBOX);
+        return new Environment(Environment::SANDBOX, $version);
     }
 
     /**
