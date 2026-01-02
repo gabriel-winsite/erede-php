@@ -246,8 +246,14 @@ class Transaction implements RedeSerializable, RedeUnserializable
     public function additional($gateway = null, $module = null)
     {
         $this->additional = new Additional();
-        $this->additional->setGateway($gateway);
-        $this->additional->setModule($module);
+
+        if ($gateway !== null) {
+            $this->additional->setGateway($gateway);
+        }
+
+        if ($module !== null) {
+            $this->additional->setModule($module);
+        }
 
         return $this;
     }
@@ -306,7 +312,7 @@ class Transaction implements RedeSerializable, RedeUnserializable
      */
     public function debitCard($cardNumber, $cardCvv, $expirationMonth, $expirationYear, $holderName)
     {
-        $this->capture(true);
+        $this->capture();
 
         return $this->setCard(
             $cardNumber,
@@ -367,9 +373,10 @@ class Transaction implements RedeSerializable, RedeUnserializable
                 'urls' => $this->urls,
                 'iata' => $this->iata,
                 'additional' => $this->additional
-            ], function ($value) {
-            return !is_null($value);
-        }
+            ],
+            function ($value) {
+                return !is_null($value);
+            }
         );
     }
 
@@ -450,6 +457,149 @@ class Transaction implements RedeSerializable, RedeUnserializable
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeRefunds(string $property, mixed $value): void
+    {
+        if ($property === 'refunds' && is_array($value)) {
+            $this->refunds = [];
+
+            foreach ($value as $refundValue) {
+                /**
+                 * @var Refund $refund
+                 */
+                $refund = Refund::create($refundValue);
+
+                $this->refunds[] = $refund;
+            }
+        }
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     */
+    private function unserializeUrls(string $property, mixed $value): void
+    {
+        if ($property === 'urls' && is_array($value)) {
+            $this->urls = [];
+
+            foreach ($value as $urlValue) {
+                $this->urls[] = new Url($urlValue->url, $urlValue->kind);
+            }
+        }
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeCapture(string $property, mixed $value): void
+    {
+        if ($property === 'capture' && is_object($value)) {
+            /**
+             * @var Capture $capture
+             */
+            $capture = Capture::create($value);
+
+            $this->capture = $capture;
+        }
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeAuthorization(string $property, mixed $value): void
+    {
+        if ($property == 'authorization' && is_object($value)) {
+            /**
+             * @var Authorization $authorization
+             */
+            $authorization = Authorization::create($value);
+
+            $this->authorization = $authorization;
+        }
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeAdditional(string $property, mixed $value): void
+    {
+        if ($property == 'additional' && is_object($value)) {
+            /**
+             * @var Additional $additional
+             */
+            $additional = Additional::create($value);
+
+            $this->additional = $additional;
+        }
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeThreeDSecure(string $property, mixed $value): void
+    {
+        if ($property == 'threeDSecure' && is_object($value)) {
+            /**
+             * @var ThreeDSecure $threeDSecure
+             */
+            $threeDSecure = ThreeDSecure::create($value);
+
+            $this->threeDSecure = $threeDSecure;
+        }
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeRequestDateTime(string $property, mixed $value): void
+    {
+        if ($property == 'requestDateTime' || $property == 'dateTime' || $property == 'refundDateTime') {
+            $value = new DateTime($value);
+        }
+
+        $this->{$property} = $value;
+    }
+
+    /**
+     * @param string $property
+     * @param mixed  $value
+     * @return void
+     * @throws Exception
+     */
+    private function unserializeBrand(string $property, mixed $value): void
+    {
+        if ($property == 'brand') {
+            /**
+             * @var Brand $brand
+             */
+            $brand = Brand::create($value);
+
+            $this->brand = $brand;
+        }
     }
 
     /**
@@ -888,13 +1038,7 @@ class Transaction implements RedeSerializable, RedeUnserializable
      */
     public function getThreeDSecure()
     {
-        $threeDSecure = $this->threeDSecure;
-
-        if ($threeDSecure == null) {
-            $threeDSecure = new ThreeDSecure();
-        }
-
-        return $threeDSecure;
+        return $this->threeDSecure ?? new ThreeDSecure();
     }
 
     /**
@@ -991,7 +1135,8 @@ class Transaction implements RedeSerializable, RedeUnserializable
         $embed = true,
         $directoryServerTransactionId = "",
         $threeDIndicator = "1"
-    ) {
+    )
+    {
         $threeDSecure = new ThreeDSecure();
         $threeDSecure->setOnFailure($onFailure);
         $threeDSecure->setEmbedded($embed);

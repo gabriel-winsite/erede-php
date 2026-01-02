@@ -17,13 +17,13 @@ class Device implements RedeSerializable
      * @param int|null        $TimeZoneOffset
      */
     public function __construct(
-        private string|int|null $ColorDepth = null,
-        private ?string $DeviceType3ds = null,
-        private ?bool $JavaEnabled = null,
-        private string $Language = 'BR',
-        private ?int $ScreenHeight = null,
-        private ?int $ScreenWidth = null,
-        private ?int $TimeZoneOffset = 3,
+         $ColorDepth = null,
+         ?string $DeviceType3ds = null,
+         ?bool $JavaEnabled = null,
+         string $Language = 'BR',
+         ?int $ScreenHeight = null,
+         ?int $ScreenWidth = null,
+         ?int $TimeZoneOffset = 3
     ) {
     }
 
@@ -39,7 +39,7 @@ class Device implements RedeSerializable
      * @param string $ColorDepth
      * @return $this
      */
-    public function setColorDepth(string $ColorDepth): static
+    public function setColorDepth(string $ColorDepth)
     {
         $this->ColorDepth = $ColorDepth;
         return $this;
@@ -57,7 +57,7 @@ class Device implements RedeSerializable
      * @param string $DeviceType3ds
      * @return $this
      */
-    public function setDeviceType3ds(string $DeviceType3ds): static
+    public function setDeviceType3ds(string $DeviceType3ds)
     {
         $this->DeviceType3ds = $DeviceType3ds;
         return $this;
@@ -75,7 +75,7 @@ class Device implements RedeSerializable
      * @param bool $JavaEnabled
      * @return $this
      */
-    public function setJavaEnabled(bool $JavaEnabled = true): static
+    public function setJavaEnabled(bool $JavaEnabled = true)
     {
         $this->JavaEnabled = $JavaEnabled;
         return $this;
@@ -93,7 +93,7 @@ class Device implements RedeSerializable
      * @param string $Language
      * @return $this
      */
-    public function setLanguage(string $Language): static
+    public function setLanguage(string $Language)
     {
         $this->Language = $Language;
         return $this;
@@ -111,7 +111,7 @@ class Device implements RedeSerializable
      * @param int $ScreenHeight
      * @return $this
      */
-    public function setScreenHeight(int $ScreenHeight): static
+    public function setScreenHeight(int $ScreenHeight)
     {
         $this->ScreenHeight = $ScreenHeight;
         return $this;
@@ -129,7 +129,7 @@ class Device implements RedeSerializable
      * @param int $ScreenWidth
      * @return $this
      */
-    public function setScreenWidth(int $ScreenWidth): static
+    public function setScreenWidth(int $ScreenWidth)
     {
         $this->ScreenWidth = $ScreenWidth;
         return $this;
@@ -147,7 +147,7 @@ class Device implements RedeSerializable
      * @param int $TimeZoneOffset
      * @return $this
      */
-    public function setTimeZoneOffset(int $TimeZoneOffset): static
+    public function setTimeZoneOffset(int $TimeZoneOffset)
     {
         $this->TimeZoneOffset = $TimeZoneOffset;
         return $this;

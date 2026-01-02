@@ -7,6 +7,7 @@ class ThreeDSecure implements RedeSerializable
     use CreateTrait;
     use SerializeTrait;
 
+    const DATA_ONLY = 'DATA_ONLY';
     const CONTINUE_ON_FAILURE = 'continue';
     const DECLINE_ON_FAILURE = 'decline';
 
@@ -56,17 +57,32 @@ class ThreeDSecure implements RedeSerializable
     private $DirectoryServerTransactionId;
 
     /**
-     * ThreeDSecure constructor.
+     * @var string|null
      */
-    public function __construct()
+    private $challengePreference = null;
+
+    /**
+     * ThreeDSecure constructor.
+     *
+     * @param bool $embedded
+     * @param string $onFailure
+     * @param string|null $userAgent
+     */
+    public function __construct(
+        bool    $embedded = true,
+        string  $onFailure = self::DECLINE_ON_FAILURE,
+        ?string $userAgent = null
+    )
     {
-        $userAgent = eRede::USER_AGENT;
+        if ($this->userAgent === null) {
+            $userAgent = eRede::USER_AGENT;
 
-        if (isset($_SERVER['HTTP_USER_AGENT'])) {
-            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            if (isset($_SERVER['HTTP_USER_AGENT'])) {
+                $userAgent = $_SERVER['HTTP_USER_AGENT'];
+            }
+
+            $this->userAgent = $userAgent;
         }
-
-        $this->setUserAgent($userAgent);
     }
 
     /**
@@ -84,7 +100,18 @@ class ThreeDSecure implements RedeSerializable
      */
     public function setThreeDIndicator($threeDIndicator)
     {
+        /**
+         * Support for 3DS 1 will be discontinued.
+         */
+        if ($threeDIndicator < 2) {
+            trigger_error(
+                'Effective 15 October 2022, support for 3DS 1 and all related technology is discontinued.',
+                time() > strtotime('2022-10-15') ? E_USER_ERROR : E_USER_DEPRECATED
+            );
+        }
+
         $this->threeDIndicator = $threeDIndicator;
+
         return $this;
     }
 
@@ -237,6 +264,24 @@ class ThreeDSecure implements RedeSerializable
     public function setEmbedded($embedded)
     {
         $this->embedded = $embedded;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getChallengePreference(): ?string
+    {
+        return $this->challengePreference;
+    }
+
+    /**
+     * @param string|null $challengePreference
+     * @return ThreeDSecure
+     */
+    public function setChallengePreference(?string $challengePreference): ThreeDSecure
+    {
+        $this->challengePreference = $challengePreference;
         return $this;
     }
 }
